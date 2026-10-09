@@ -55,6 +55,24 @@
     tracked.forEach(section => sectionObserver.observe(section));
   }
 
+  // Project showcase: the step crossing the middle of the viewport drives the pinned image panel.
+  const showcase = document.querySelector('.showcase');
+  if (showcase && 'IntersectionObserver' in window) {
+    const steps = Array.from(showcase.querySelectorAll('[data-step]'));
+    const stages = Array.from(showcase.querySelectorAll('[data-stage]'));
+    const dots = Array.from(showcase.querySelectorAll('.stage-dots i'));
+    const count = showcase.querySelector('.stage-count');
+    const activate = index => {
+      [steps, stages, dots].forEach(list => list.forEach((el, i) => el.classList.toggle('is-active', i === index)));
+      if (count) count.textContent = `0${index + 1} / 0${steps.length}`;
+    };
+    showcase.classList.add('is-live');
+    const stepObserver = new IntersectionObserver(entries => {
+      for (const entry of entries) if (entry.isIntersecting) activate(steps.indexOf(entry.target));
+    }, {rootMargin: '-45% 0px -45% 0px'});
+    steps.forEach(step => stepObserver.observe(step));
+  }
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // Parallax: move each layer by its parent's distance from the viewport centre times its factor.

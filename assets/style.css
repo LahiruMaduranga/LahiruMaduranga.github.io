@@ -205,3 +205,35 @@ html{scroll-padding-top:calc(var(--header-h) + 16px)}
 .marquee-mono{color:var(--ink);font-size:13px;letter-spacing:.14em;opacity:.85}
 .marquee{-webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
 .assembly{margin:0 0 28px}.assembly img{width:100%;height:auto}.assembly .theme-dark{display:none}:root[data-theme=dark] .assembly .theme-light{display:none}:root[data-theme=dark] .assembly .theme-dark{display:block}
+
+/* Featured showcase: pinned image panel on the left, project specs scrolling on the right. */
+.showcase{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:start}
+.showcase-stage{position:sticky;top:calc(var(--header-h) + 32px);height:min(640px,calc(100vh - var(--header-h) - 64px));border:1px solid var(--line);border-radius:8px;background:var(--soft);overflow:hidden;isolation:isolate}
+.stage-item{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:64px 48px 72px;opacity:0;transform:scale(.96);transition:opacity .6s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.stage-item.is-active{opacity:1;transform:none}
+.stage-item>img,.stage-item>.themed-art,.stage-item>svg{max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain}
+.stage-item:has(>img.graded){padding:0}.stage-item>img.graded{width:100%;height:100%;max-width:none;object-fit:cover}
+.stage-num{position:absolute;top:10px;right:22px;font:700 clamp(90px,10vw,150px)/1 Inter,Arial,sans-serif;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1px var(--line);z-index:-1}
+.stage-item .concept-label{position:absolute;right:16px;bottom:16px;font-size:9px;color:var(--muted);background:var(--card);padding:3px 6px;border-radius:2px}
+.stage-progress{position:absolute;left:18px;bottom:16px;display:flex;align-items:center;gap:14px;font-size:10px;color:var(--muted);z-index:2}
+.stage-dots{display:flex;gap:6px}.stage-dots i{width:18px;height:3px;border-radius:2px;background:var(--line);transition:background .3s,width .3s}
+.stage-dots i.is-active{width:30px;background:var(--accent)}
+.feature-step{min-height:72vh;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:32px 0;border-bottom:1px solid var(--line)}
+.feature-step:last-child{border-bottom:0}
+.feature-step h3{font-size:clamp(24px,2.6vw,32px);letter-spacing:-.03em;font-weight:600;line-height:1.2}
+.feature-step h3 a:hover{color:var(--accent-ink)}
+.step-summary{color:var(--muted);font-size:15px}
+.feature-step .text-link{align-self:start}
+.step-media{display:none}
+/* Only once app.js is running: dim inactive steps and reveal specs one by one on the active step. */
+.showcase.is-live .feature-step{opacity:.35;transition:opacity .5s ease}
+.showcase.is-live .feature-step.is-active{opacity:1}
+.showcase.is-live .feature-step :is(.feature-facts dt,.feature-facts dd,.tags li){opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.showcase.is-live .feature-step.is-active :is(.feature-facts dt,.feature-facts dd,.tags li){opacity:1;transform:none}
+.showcase.is-live .feature-step.is-active .feature-facts :nth-child(n+3){transition-delay:.15s}
+.showcase.is-live .feature-step.is-active .tags li{transition-delay:.25s}
+.showcase.is-live .feature-step.is-active .tags li:nth-child(2){transition-delay:.32s}
+.showcase.is-live .feature-step.is-active .tags li:nth-child(3){transition-delay:.39s}
+.showcase.is-live .feature-step.is-active .tags li:nth-child(4){transition-delay:.46s}
+.showcase.is-live .feature-step.is-active .tags li:nth-child(n+5){transition-delay:.53s}
+@media(max-width:900px){.showcase{grid-template-columns:1fr;gap:0}.showcase-stage{display:none}.feature-step{min-height:0;padding:36px 0}.showcase.is-live .feature-step{opacity:1}.step-media{display:flex;align-items:center;justify-content:center;aspect-ratio:1.5;border:1px solid var(--line);border-radius:8px;background:var(--soft);padding:28px;overflow:hidden;margin-bottom:6px}.step-media>img,.step-media>.themed-art,.step-media>svg{max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain}.step-media:has(>img.graded){padding:0}.step-media>img.graded{width:100%;height:100%;object-fit:cover}}
